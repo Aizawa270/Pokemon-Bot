@@ -1,17 +1,15 @@
 {
-  "name": "pokemon-bot",
-  "version": "1.0.0",
-  "description": "Pokémon RPG Discord Bot",
-  "main": "bot.js",
-  "scripts": {
-    "start": "node bot.js"
-  },
-  "dependencies": {
-    "discord.js": "^14.14.1",
-    "fs": "0.0.1-security",
-    "path": "0.12.7"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  }
+    "name": "pokemon-bot",
+    "version": "1.0.0",
+    "description": "Pokémon RPG Discord Bot",
+    "main": "bot.js",
+    "scripts": {
+        "start": "node bot.js"
+    },
+    "dependencies": {
+        "discord.js": "^14.14.1"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
 }
