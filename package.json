@@ -1,12 +1,10 @@
-{
-  "name": "pokemon-rpg-bot",
-  "version": "1.0.0", 
-  "description": "Pokémon RPG Discord Bot",
-  "main": "bot.js",
-  "scripts": {
-    "start": "node bot.js"
-  },
+# Create/update package.json
+echo '{
+  "name": "pokemon-bot",
+  "version": "1.0.0",
+  "type": "module",
   "dependencies": {
-    "discord.js": "^14.14.1"
+    "axios": "^1.0.0",
+    "node-cron": "^3.0.0"
   }
-}
+}' > package.json
