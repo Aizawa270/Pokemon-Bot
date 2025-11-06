@@ -1912,24 +1912,41 @@ async function handleLeaderboard(message) {
     ).slice(0, 10);
 
     let badgesList = '';
-    byBadges.forEach((player, index) => {
-        const user = await message.client.users.fetch(player.id).catch(() => ({ username: 'Unknown' }));
-        badgesList += `**${index + 1}.** ${user.username} - ${player.badges.length} badges\n`;
-    });
+    for (let i = 0; i < byBadges.length; i++) {
+        const player = byBadges[i];
+        try {
+            const user = await message.client.users.fetch(player.id);
+            badgesList += `**${i + 1}.** ${user.username} - ${player.badges.length} badges\n`;
+        } catch {
+            badgesList += `**${i + 1}.** Unknown - ${player.badges.length} badges\n`;
+        }
+    }
 
     let levelList = '';
-    byLevel.forEach((player, index) => {
-        const user = await message.client.users.fetch(player.id).catch(() => ({ username: 'Unknown' }));
-        const highestLevel = Math.max(...player.team.map(p => p.level));
-        levelList += `**${index + 1}.** ${user.username} - Lv.${highestLevel}\n`;
-    });
+    for (let i = 0; i < byLevel.length; i++) {
+        const player = byLevel[i];
+        try {
+            const user = await message.client.users.fetch(player.id);
+            const highestLevel = Math.max(...player.team.map(p => p.level));
+            levelList += `**${i + 1}.** ${user.username} - Lv.${highestLevel}\n`;
+        } catch {
+            const highestLevel = Math.max(...player.team.map(p => p.level));
+            levelList += `**${i + 1}.** Unknown - Lv.${highestLevel}\n`;
+        }
+    }
 
     let pokedexList = '';
-    byPokedex.forEach((player, index) => {
-        const user = await message.client.users.fetch(player.id).catch(() => ({ username: 'Unknown' }));
-        const caughtCount = Object.values(player.pokedex).filter(p => p.caught).length;
-        pokedexList += `**${index + 1}.** ${user.username} - ${caughtCount} Pokémon\n`;
-    });
+    for (let i = 0; i < byPokedex.length; i++) {
+        const player = byPokedex[i];
+        try {
+            const user = await message.client.users.fetch(player.id);
+            const caughtCount = Object.values(player.pokedex).filter(p => p.caught).length;
+            pokedexList += `**${i + 1}.** ${user.username} - ${caughtCount} Pokémon\n`;
+        } catch {
+            const caughtCount = Object.values(player.pokedex).filter(p => p.caught).length;
+            pokedexList += `**${i + 1}.** Unknown - ${caughtCount} Pokémon\n`;
+        }
+    }
 
     const embed = new EmbedBuilder()
         .setTitle('🏆 Leaderboards')
