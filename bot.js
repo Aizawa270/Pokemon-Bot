@@ -2121,31 +2121,38 @@ async function handleSwitch(message, args) {
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
 
-    // Check if message starts with prefix or user is prefixless
-    const isPrefixless = prefixlessUsers.has(message.author.id);
-    if (!message.content.startsWith(prefix) && !isPrefixless) return;
+    // Check if user is in a battle first (battle commands don't use prefix)
+    if (currentBattles.has(message.author.id)) {
+        const battle = currentBattles.get(message.author.id);
+        if (battle.type === 'gym') {
+            await handleGymBattle(message, battle);
+        } else {
+            await handleBattleCommand(message);
+        }
+        return; // STOP HERE - don't process regular commands during battle
+    }
 
+    const isPrefixless = prefixlessUsers.has(message.author.id);
     let args, command;
+    let isCommand = false;
     
+    // Check prefixless first
     if (isPrefixless) {
         args = message.content.trim().split(/ +/);
         command = args.shift().toLowerCase();
-    } else {
+        isCommand = true;
+    } 
+    // Then check prefix (but only if not prefixless user to avoid duplicates)
+    else if (message.content.startsWith(prefix)) {
         args = message.content.slice(prefix.length).trim().split(/ +/);
         command = args.shift().toLowerCase();
+        isCommand = true;
     }
 
-    try {
-        if (currentBattles.has(message.author.id)) {
-            const battle = currentBattles.get(message.author.id);
-            if (battle.type === 'gym') {
-                await handleGymBattle(message, battle);
-            } else {
-                await handleBattleCommand(message);
-            }
-            return;
-        }
+    // If it's not a command, stop here
+    if (!isCommand) return;
 
+    try {
         switch (command) {
             case 'start':
                 await handleStart(message);
@@ -2196,8 +2203,9 @@ client.on('messageCreate', async (message) => {
                 await handleSwitch(message, args);
                 break;
             default:
+                // Only show unknown command for prefix users
                 if (!isPrefixless) {
-                    await message.reply(`Unknown command! Use \`.help\` to see available commands.`);
+                    await message.reply(`Unknown command! Use \`${prefix}help\` to see available commands.`);
                 }
                 break;
         }
