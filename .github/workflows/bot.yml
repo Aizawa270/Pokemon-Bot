@@ -1,27 +1,22 @@
-name: Pokémon Bot
-on:
-  push:
-    branches: [ main ]
-  schedule:
-    - cron: '0 */6 * * *'
-
-jobs:
-  run-bot:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm install
-        
-      - name: Run Pokémon Bot
-        run: node bot.js
-        env:
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+name: Pokémon Bot  
+on:  
+  push:  
+    branches: [ main ]  
+  schedule:  
+    - cron: '0 */6 * * *'  
+jobs:  
+  run-bot:  
+    runs-on: ubuntu-latest  
+    steps:  
+    - name: Checkout code  
+      uses: actions/checkout@v3  
+    - name: Setup Node.js  
+      uses: actions/setup-node@v3  
+      with:  
+        node-version: '18'  
+    - name: Install dependencies  
+      run: npm install
+    - name: Run Pokémon Bot  
+      run: node bot.js  
+      env:  
+        DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
