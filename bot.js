@@ -1,3 +1,4 @@
+
 // ULTIMATE POKÉMON RPG BOT - COMPLETE WITH ALL 386 POKÉMON
 const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fs = require('fs');
