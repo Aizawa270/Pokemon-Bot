@@ -1,5 +1,8 @@
 name: Run Pokémon Bot
-on: [push, workflow_dispatch]
+on: 
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   run-bot:
@@ -12,6 +15,8 @@ jobs:
         node-version: '18'
     - name: Install dependencies
       run: npm install
+    - name: Create data directory
+      run: mkdir -p data
     - name: Run bot
       env:
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
